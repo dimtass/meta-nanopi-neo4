@@ -1,0 +1,9 @@
+[Unit]
+Description=Setup the rk max performance via sysfs
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/rk-overclocking
+
+[Install]
+WantedBy=multi-user.target

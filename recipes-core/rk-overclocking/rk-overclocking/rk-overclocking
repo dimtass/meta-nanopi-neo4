@@ -1,0 +1,8 @@
+#!/bin/bash
+echo 2 > /sys/kernel/debug/clk/sclk_ddrc/clk_enable_count
+echo 928000000 > /sys/kernel/debug/clk/sclk_ddrc/clk_rate
+echo 1704000 > /sys/devices/system/cpu/cpufreq/policy0/scaling_max_freq
+echo 2208000 > /sys/devices/system/cpu/cpufreq/policy4/scaling_max_freq
+echo performance > /sys/devices/platform/dmc/devfreq/dmc/governor
+echo performance > /sys/devices/system/cpu/cpufreq/policy0/scaling_governor
+echo performance > /sys/devices/system/cpu/cpufreq/policy4/scaling_governor
