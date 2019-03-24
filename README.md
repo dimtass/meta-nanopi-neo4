@@ -5,6 +5,9 @@ This meta layer expands the [meta-rockchip](https://github.com/rockchip-linux/me
 layer and adds the [armbian](https://github.com/armbian/build) BSP
 for the NanoPi-neo4. The layer also supports libmali for 3D acceleration.
 
+There's a blog post [here](https://www.stupid-projects.com/nanopi-neo4-yocto-meta-layer/)
+with some more info about this layer.
+
 ## Distros
 The available supported distros are
 * `rk-none`: For no graphics support (only console images)
