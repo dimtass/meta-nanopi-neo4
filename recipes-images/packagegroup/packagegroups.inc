@@ -20,7 +20,7 @@ STANDARD_PKGS = " \
     usbreset \
     udev \
 	udev-extraconf \
-    u-boot-fw-tools \
+    u-boot-fw-utils \
     dfu-util \
 "
 

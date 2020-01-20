@@ -1,33 +1,69 @@
-DESCRIPTION="Upstream's U-boot configured for allwinner devices"
+DESCRIPTION="Upstream's U-boot configured for rockchip devices"
 AUTHOR = "Dimitris Tassopoulos <dimtass@gmail.com>"
 
-LICENSE = "GPLv2+"
+require u-boot-common.inc
 
-require recipes-bsp/u-boot/u-boot.inc
+LIC_FILES_CHKSUM ?= "file://Licenses/README;md5=30503fd321432fc713238f582193b78e"
 
-DEPENDS = "bison-native dtc-native bc-native swig-native atf-rk"
-
-PROVIDES = "virtual/bootloader"
-
-DEFAULT_PREFERENCE_rk3399="1"
-
-SRC_URI = "git://git.denx.de/u-boot.git;branch=master \
-            file://boot-rockchip.cmd \
-            file://do_patch.sh \
-            file://u-boot-rk3399 \
+SRC_URI += " \
+            file://${SOC_FAMILY}-boot/boot.cmd \
+            file://${SOC_FAMILY}-boot/fixup.cmd \
             file://rkEnv.txt \
 "
 
-do_compile_rk3399[depends] += "atf-rk:do_deploy"
+UBOOT_ENV_SUFFIX = "scr"
+UBOOT_ENV = "boot"
+UBOOT_FIXUP_BINARY = "fixup.scr"
 
-UBOOT_SCRIPT = "boot.scr"
-UBOOT_BIN = "rk3399-uboot.bin"
+do_configure() {
+    cd ${S}
+    ${WORKDIR}/armbian-patcher.sh ${WORKDIR}/patches-${SOC_FAMILY}-${UBOOT_VERSION}
+    oe_runmake -C ${S} O=${B} ${UBOOT_MACHINE}
+}
 
-EXTRA_OEMAKE = 'CROSS_COMPILE=${TARGET_PREFIX} CC="${TARGET_PREFIX}gcc ${TOOLCHAIN_OPTIONS}" V=1'
-EXTRA_OEMAKE += 'HOSTCC="${BUILD_CC} ${BUILD_CFLAGS} ${BUILD_LDFLAGS}"'
-EXTRA_OEMAKE += 'PYTHON=nativepython STAGING_INCDIR=${STAGING_INCDIR_NATIVE} STAGING_LIBDIR=${STAGING_LIBDIR_NATIVE}'
-EXTRA_OEMAKE += ' HOSTLDSHARED="${BUILD_CC} -shared ${BUILD_LDFLAGS} ${BUILD_CFLAGS}" '
+do_compile_append() {
 
-S = "${WORKDIR}/git"
+    if [ "${SOC_FAMILY}" == "sun50iw2" || "${SOC_FAMILY}" == "sun50iw6" && ! -f "${DEPLOY_DIR_IMAGE}/bl31.bin" ]; then
+        bberror "Could not find ${DEPLOY_DIR_IMAGE}/bl31.bin. You need to build the atf-rk package first"
+    fi
 
-COMPATIBLE_MACHINE = "(rk3399)"
+    cp ${WORKDIR}/${SOC_FAMILY}-boot/boot.cmd ${WORKDIR}/boot.cmd
+    ${B}/tools/mkimage -C none -A arm -T script -d ${WORKDIR}/boot.cmd ${WORKDIR}/${UBOOT_ENV_BINARY}
+
+    cp ${WORKDIR}/${SOC_FAMILY}-boot/fixup.cmd ${WORKDIR}/fixup.cmd
+    ${B}/tools/mkimage -C none -A arm -T script -d ${WORKDIR}/fixup.cmd ${WORKDIR}/${UBOOT_FIXUP_BINARY}
+
+    # Add the soc specific parameters in the environment
+    sed -e "s,overlay_prefix=,overlay_prefix=${OVERLAY_PREFIX},g" \
+        -i ${WORKDIR}/rkEnv.txt
+    sed -e "s,overlays=,overlays=${DEFAULT_OVERLAYS} ,g" \
+        -i ${WORKDIR}/rkEnv.txt
+    # echo "overlay_prefix=${OVERLAY_PREFIX}" >> ${WORKDIR}/rkEnv.txt
+    # echo "overlays=${DEFAULT_OVERLAYS}" >> ${WORKDIR}/rkEnv.txt
+}
+
+do_install_append() {
+    # Install files to rootfs/boot/
+    install -m 644 ${WORKDIR}/${UBOOT_FIXUP_BINARY} ${D}/boot/${UBOOT_FIXUP_BINARY}
+    install -m 644 ${WORKDIR}/rkEnv.txt ${D}/boot/rkEnv.txt
+
+    # Fix broken device tree reference build into u-boot
+    for dtb in ${KERNEL_DEVICETREE}; do
+        dtb_base_name=`basename $dtb`
+        dtb_dir_name=`dirname $dtb`
+        if [ "${dtb_dir_name}" != "." ]; then
+            install -d ${D}/boot/$dtb_dir_name
+            ln -rsf ${D}/boot/$dtb_base_name ${D}/boot/$dtb
+        fi
+    done
+
+    # Cleanup u-boot rootfs files
+    rm -rf ${D}/boot/${SPL_BINARYNAME} ${D}/boot/${SPL_IMAGE} ${D}/boot/${UBOOT_BINARY} ${D}/boot/${UBOOT_IMAGE}
+}
+
+do_deploy_append() {
+    # Copy also the fixup script to the deploy dir
+    install -m 644 ${WORKDIR}/${UBOOT_FIXUP_BINARY} ${DEPLOYDIR}/${UBOOT_FIXUP_BINARY}
+
+    install -m 644 ${WORKDIR}/rkEnv.txt ${DEPLOYDIR}/rkEnv.txt
+}

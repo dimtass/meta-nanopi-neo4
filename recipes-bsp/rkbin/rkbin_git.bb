@@ -9,14 +9,14 @@ inherit deploy
 include conf/include/layer-vars.inc
 
 SRC_URI = "git://github.com/armbian/rkbin.git;branch=master"
-SRCREV = "90dbe9aa6e98bc49405f7c04722f08a613029b13"
+SRCREV = "a632039224934f6f4600d5bd3cd2b8d93f716f83"
 
 RK_BIN_FOLDER ?= "rk33"
 RKBIN_TOOLS_RECIPE ?= "${bindir}/rkbin"
 RKBIN_TOOLS ?= "${STAGING_DIR_NATIVE}${RKBIN_TOOLS_RECIPE}"
 
-RK_DDR_BIN ?= "rk3399_ddr_800MHz_v1.14.bin"
-RK_MINILOADER_BIN ?= "rk3399_miniloader_v1.15.bin"
+RK_DDR_BIN ?= "rk3399_ddr_800MHz_v1.24.bin"
+RK_MINILOADER_BIN ?= "rk3399_miniloader_v1.19.bin"
 
 S = "${WORKDIR}/git"
 
@@ -36,8 +36,10 @@ do_install_class-native() {
 }
 
 do_deploy() {
-    install -d ${DEPLOYDIR}/${BOOT_TOOLS_DIR}
+    # install -d ${DEPLOYDIR}/${BOOT_TOOLS_DIR}
+	[ -f "${DEPLOY_DIR_IMAGE}/rk-ddr.bin" ] && rm ${DEPLOY_DIR_IMAGE}/rk-ddr.bin
     install -m 0644 ${S}/${RK_BIN_FOLDER}/${RK_DDR_BIN} ${DEPLOYDIR}/rk-ddr.bin
+	[ -f "${DEPLOY_DIR_IMAGE}/rk-miniloader.bin" ] && rm ${DEPLOY_DIR_IMAGE}/rk-miniloader.bin
     install -m 0644 ${S}/${RK_BIN_FOLDER}/${RK_MINILOADER_BIN} ${DEPLOYDIR}/rk-miniloader.bin
 }
 

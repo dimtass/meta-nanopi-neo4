@@ -57,7 +57,7 @@ RDEPENDS_packagegroup-extra-testing = "\
 
 RDEPENDS_packagegroup-extra-base = " \
     rk-overclocking \
-	rk-firmware \
+	armbian-firmware \
     ${STANDARD_PKGS} \
     ${WIFI_SUPPORT_PKGS} \
 	${@bb.utils.contains("DISTRO_FEATURES", "alsa", "${ALSA_PKGS}", "", d)} \

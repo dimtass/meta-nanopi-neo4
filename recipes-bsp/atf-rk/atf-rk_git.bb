@@ -27,6 +27,7 @@ PLAT_rk3399 = "rk3399"
 S = "${WORKDIR}/git"
 
 do_compile () {
+    set -x
     export CROSS_COMPILE="${TARGET_PREFIX}"
     export M0_CROSS_COMPILE="${GCC_ARM_NONE_TOOLCHAIN}/bin/arm-none-eabi-"
     cd ${S}
@@ -36,8 +37,8 @@ do_compile () {
     echo "-> Build ${PLAT} bl31.bin"
     # Set BUIL_STRING with the revision info
 
-    oe_runmake clean PLAT=${PLAT}
-    oe_runmake ${BUILD_STRING} PLAT=${PLAT} DEBUG=1 bl31
+    CFLAGS=-Wno-error oe_runmake clean PLAT=${PLAT}
+    CFLAGS=-Wno-error oe_runmake PLAT=${PLAT} DEBUG=1 bl31
 
     # Create trust.bin
     trust_merger trust.ini

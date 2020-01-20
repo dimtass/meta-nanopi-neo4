@@ -71,7 +71,7 @@ git clone --depth 1 -j 8 -b sumo git@github.com:openembedded/meta-openembedded.g
 git clone --depth 1 -j 8 -b sumo git://git.yoctoproject.org/poky
 git clone --depth 1 -j 8 git@github.com:rockchip-linux/meta-rockchip.git
 cd ..
-ln -s sources/meta-nanopi-neo4/setup-environment.sh
+ln -s sources/meta-nanopi-neo4/scripts/setup-environment.sh
 ```
 
 The commit hashes I've succesfully tested are:
