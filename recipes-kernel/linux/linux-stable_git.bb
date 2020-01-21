@@ -16,7 +16,7 @@ FILESEXTRAPATHS_prepend := "${THISDIR}/linux-stable_${LINUX_VERSION}:${THISDIR}/
 
 # defconfig from armbian/build/config/kernel/linux-rk3399-default.config
 SRC_URI = " \
-        git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git \
+        git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git;branch=linux-5.4.y \
         ${ARMBIAN_URI} \
 "
 

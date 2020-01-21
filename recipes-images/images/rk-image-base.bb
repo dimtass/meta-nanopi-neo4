@@ -27,6 +27,6 @@ IMAGE_INSTALL += " \
 	packagegroup-core-ssh-openssh \
 	packagegroup-base \
 	${@bb.utils.contains("DISTRO_FEATURES", "x11 wayland", "xserver-xorg-xwayland weston-xwayland", "", d)} \
-	${@bb.utils.contains("DISTRO_FEATURES", "wayland", "weston weston-init weston-examples weston-ini", "", d)} \
+	${@bb.utils.contains("DISTRO_FEATURES", "wayland", "weston weston-init weston-examples", "", d)} \
 "
 

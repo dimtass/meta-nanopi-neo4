@@ -54,8 +54,8 @@ and `bblayers.conf.sample` file that are located in `meta-nanopi-neo4/conf/`.
 
 ## Versions
 Some useful component versions for this layer:
-* `u-boot`  : 2019.01
-* `Kernel`  : 4.4.175
+* `u-boot`  : 2020.01
+* `Kernel`  : 5.4.13
 * `libmali` : r14p0
 
 ## How to use this layer
@@ -66,13 +66,18 @@ folder run these commands:
 mkdir sources
 cd sources
 git clone --depth 1 -j 8 git@bitbucket.org:dimtass/meta-nanopi-neo4.git
-git clone --depth 1 -j 8 -b thud git@github.com:meta-qt5/meta-qt5.git
-git clone --depth 1 -j 8 -b sumo git@github.com:openembedded/meta-openembedded.git
-git clone --depth 1 -j 8 -b sumo git://git.yoctoproject.org/poky
-git clone --depth 1 -j 8 git@github.com:rockchip-linux/meta-rockchip.git
+git clone --depth 1 -j 8 -b zeus git@github.com:meta-qt5/meta-qt5.git
+git clone --depth 1 -j 8 -b zeus git@github.com:openembedded/meta-openembedded.git
+git clone --depth 1 -j 8 -b zeus git://git.yoctoproject.org/poky
+git clone --depth 1 -j 8 -b zeus git@github.com:rockchip-linux/meta-rockchip.git
+rm -rf meta-rockchip/recipes-bsp/u-boot
 cd ..
 ln -s sources/meta-nanopi-neo4/scripts/setup-environment.sh
 ```
+
+> Note: The `meta-rockchip/recipes-bsp/u-boot` reipes they break this layer
+because the bbappend ovewrites the u-boot recipe of the meta-nanopi-neo4.
+Therefore, the solution is to remove the whole folder as it's not needed.
 
 The commit hashes I've succesfully tested are:
 * `meta-rockchip`: 226b2b3f4b584943cd1f0436cfae6285edbefe10
@@ -96,16 +101,6 @@ development tools, run this:
 ```sh
 bitbake rk-image-testing
 ```
-
-## Overclocking
-There's a variable that if it's set then the overclocking is enabled for all CPUs
-and the RAM. The `RK3399_OVERCLOCKING` is enabled by default in the `conf/machine/nanopi-neo4.conf`.
-This adds the `recipes-core/rk-overclocking/rk-overclocking_1.0.bb` recipe in the
-image. This service will set the following frequencies:
-* `RAM`: 928MHz (default max is 800MHz)
-* `CPU 0-3`: 1512MHz (default max is 1416MHz)
-* `CPU 4-5`: 1992MHz (default max is 1800MHz)
-
 
 ## Benchmark
 For the `rk-image-testing` and the rk-wayland `DISTRO`, you can use the `glmark2`

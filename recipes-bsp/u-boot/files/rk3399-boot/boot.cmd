@@ -11,7 +11,7 @@ setenv verbosity "1"
 setenv console "both"
 setenv rootfstype "ext4"
 setenv docker_optimizations "on"
-setenv fdtfile "rockchip/rk3399-nanopi4-rev04.dtb"
+setenv fdtfile "rockchip/rk3399-nanopi-neo4.dtb"
 
 echo "Boot script loaded from ${devtype} ${devnum}"
 

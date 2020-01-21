@@ -1,4 +1,4 @@
-fdtfile=rockchip/rk3399-nanopi4-rev04.dtb
+fdtfile=rockchip/rk3399-nanopi-neo4.dtb
 extra_bootargs=
 logo=disabled
 console=both

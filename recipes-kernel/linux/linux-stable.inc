@@ -39,7 +39,7 @@ ARMBIAN_URI = " \
         git://github.com/cilynx/rtl88x2BU_WiFi_linux_v5.3.1_27678.20180430_COEX20180427-5959.git;name=rtl88x2bu;destsuffix=extras/rtl88x2bu \
 "
 SRCREV_aufs5 = "6eab478de1ced7eb5e6a88c50b1f97f7b1f2cfe4"
-SRCREV_wireguard = "c556012f30406cc1ec4cae17be87d91caf956529"
+SRCREV_wireguard = "edad0d6e99e5133b1e8e865d727a25fff6399cb4"
 SRCREV_rtl8812au = "c7e1ce2ed3ce18927eb9c45a85e812c3ba4e51d2"
 SRCREV_xradio = "d0e5b313a4cdebf7cbff66fe8a33ff9c8ef89bb9"
 SRCREV_rtl8811cu = "fa09e8076ec37a44757be099e4d81d28b0d066fa"

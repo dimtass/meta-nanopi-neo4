@@ -6,7 +6,7 @@ DESCRIPTION = "A image with Rockchip's multimedia packages."
 require rk-image-base.bb
 
 IMAGE_INSTALL += " \
-	libdrm-rockchip \
-	packagegroup-rk-gstreamer-full \
+	libdrm \
+	gstreamer1.0-rockchip \
 	gstreamer1.0-libav \
 "

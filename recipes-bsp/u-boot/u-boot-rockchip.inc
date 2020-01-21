@@ -7,31 +7,26 @@ LIC_FILES_CHKSUM ?= "file://Licenses/README;md5=30503fd321432fc713238f582193b78e
 
 SRC_URI += " \
             file://${SOC_FAMILY}-boot/boot.cmd \
-            file://${SOC_FAMILY}-boot/fixup.cmd \
             file://rkEnv.txt \
 "
 
 UBOOT_ENV_SUFFIX = "scr"
 UBOOT_ENV = "boot"
-UBOOT_FIXUP_BINARY = "fixup.scr"
 
 do_configure() {
     cd ${S}
     ${WORKDIR}/armbian-patcher.sh ${WORKDIR}/patches-${SOC_FAMILY}-${UBOOT_VERSION}
-    oe_runmake -C ${S} O=${B} ${UBOOT_MACHINE}
+    oe_runmake mrproper
+    oe_runmake ${UBOOT_MACHINE}
 }
 
-do_compile_append() {
-
-    if [ "${SOC_FAMILY}" == "sun50iw2" || "${SOC_FAMILY}" == "sun50iw6" && ! -f "${DEPLOY_DIR_IMAGE}/bl31.bin" ]; then
-        bberror "Could not find ${DEPLOY_DIR_IMAGE}/bl31.bin. You need to build the atf-rk package first"
-    fi
+do_compile() {
+    set -x
+    cd ${S}
+    oe_runmake
 
     cp ${WORKDIR}/${SOC_FAMILY}-boot/boot.cmd ${WORKDIR}/boot.cmd
     ${B}/tools/mkimage -C none -A arm -T script -d ${WORKDIR}/boot.cmd ${WORKDIR}/${UBOOT_ENV_BINARY}
-
-    cp ${WORKDIR}/${SOC_FAMILY}-boot/fixup.cmd ${WORKDIR}/fixup.cmd
-    ${B}/tools/mkimage -C none -A arm -T script -d ${WORKDIR}/fixup.cmd ${WORKDIR}/${UBOOT_FIXUP_BINARY}
 
     # Add the soc specific parameters in the environment
     sed -e "s,overlay_prefix=,overlay_prefix=${OVERLAY_PREFIX},g" \
@@ -44,7 +39,6 @@ do_compile_append() {
 
 do_install_append() {
     # Install files to rootfs/boot/
-    install -m 644 ${WORKDIR}/${UBOOT_FIXUP_BINARY} ${D}/boot/${UBOOT_FIXUP_BINARY}
     install -m 644 ${WORKDIR}/rkEnv.txt ${D}/boot/rkEnv.txt
 
     # Fix broken device tree reference build into u-boot
@@ -62,8 +56,6 @@ do_install_append() {
 }
 
 do_deploy_append() {
-    # Copy also the fixup script to the deploy dir
-    install -m 644 ${WORKDIR}/${UBOOT_FIXUP_BINARY} ${DEPLOYDIR}/${UBOOT_FIXUP_BINARY}
-
+    install -m 644 ${B}/${SPL_BINARY} ${DEPLOYDIR}/u-boot-${MACHINE}.bin
     install -m 644 ${WORKDIR}/rkEnv.txt ${DEPLOYDIR}/rkEnv.txt
 }

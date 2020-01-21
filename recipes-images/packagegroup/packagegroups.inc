@@ -57,7 +57,6 @@ BMAPTOOL_PKGS = " \
 WIFI_SUPPORT_PKGS = " \
     crda \
     iw \
-    wireless-tools \
     wpa-supplicant \
     dnsmasq \
     hostapd \

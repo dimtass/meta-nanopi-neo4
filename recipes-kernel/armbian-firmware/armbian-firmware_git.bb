@@ -16,6 +16,8 @@ AUTHOR = "Dimitris Tassopoulos <dimitris.tassopoulos@gmail.com>"
 LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda2f7b4f302"
 
+PROVIDES_${PN} = "armbian-firmware linux-firmware"
+
 SRCREV_linux-firmware = "9e194c730712addbdf5b50cf71f9a4ec42623a29"
 SRCREV_armbian-firmware = "78a566d50b7f82bfe77b32c172ce0dfee8642dea"
 
@@ -64,5 +66,3 @@ FILES_${PN} += "${nonarch_base_libdir}/firmware"
 # Firmware files are generally not ran on the CPU, so they can be
 # allarch despite being architecture specific
 INSANE_SKIP = "arch file-rdeps"
-
-COMPATIBLE_MACHINE = "(sun8i|sun50i)"
