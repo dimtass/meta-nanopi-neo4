@@ -27,7 +27,6 @@ IMAGE_INSTALL += " \
 	sshfs-fuse \
 	dhcp-client \
 	${AUTO_TEST_INSTALL} \
-	${KERNEL_EXTRA_INSTALL_PKGS} \
 	${SENSORS_PKGS} \
     ${APT_PKGS} \
     ${PYTHON2_PKGS} \
