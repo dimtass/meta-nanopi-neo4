@@ -1,8 +1,8 @@
 #!/bin/bash
-: ${MACHINE:=}
-: ${IMAGE:=}
+: ${MACHINE:=nanopi-neo4}
+: ${IMAGE:=testing}
 : ${SD:=$1}
-: ${IMAGE_FILE:=build/tmp/deploy/images/${MACHINE}/allwinner-${IMAGE}-image-${MACHINE}.wic.bz2}
+: ${IMAGE_FILE:=build/tmp/deploy/images/${MACHINE}/rk-image-${IMAGE}-${MACHINE}.wic.bz2}
 
 if [ "$(whoami)" != "root" ]; then
     echo "You need to run the script as root..."
@@ -12,7 +12,7 @@ fi
 if [ -z "${MACHINE}" ]; then
     cat <<EOF
 You need to set which MACHINE image to flash to the SD. eg.:
-$ sudo IMAGE=multimedia MACHINE=nanopi-k1-plus ./flash_sd.sh /dev/sdX
+$ sudo IMAGE=multimedia ./flash_sd.sh /dev/sdX
 EOF
     exit 1
 fi
