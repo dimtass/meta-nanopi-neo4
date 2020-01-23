@@ -8,6 +8,10 @@ for the NanoPi-neo4. The layer also supports libmali for 3D acceleration.
 There's a blog post [here](https://www.stupid-projects.com/nanopi-neo4-yocto-meta-layer/)
 with some more info about this layer.
 
+> Update: This meta layer is not updated often, therefore there might be a case that
+your build is broken. In this case you should use the proposed hashes for each repo,
+because those were the ones that the layer was tested.
+
 ## Distros
 The available supported distros are
 * `rk-none`: For no graphics support (only console images)
@@ -80,10 +84,12 @@ because the bbappend ovewrites the u-boot recipe of the meta-nanopi-neo4.
 Therefore, the solution is to remove the whole folder as it's not needed.
 
 The commit hashes I've succesfully tested are:
-* `meta-rockchip`: 226b2b3f4b584943cd1f0436cfae6285edbefe10
-* `poky`: b28f5672ab55ea303727e9f03bc594c7774d597e
-* `meta-openembedded`: 8760facba1bceb299b3613b8955621ddaa3d4c3f
-* `meta-qt5`: 360ca76d24453a57d4b7b50577771cc882d62be2
+```
+meta-rockchip        = "yocto-next:5b8997a5992204cb773a55dca9406c0f95a4d061"
+meta-qt5             = "zeus:a582fd4c810529e9af0c81700407b1955d1391d2" 
+meta-openembedded     = "zeus:e855ecc6d35677e79780adc57b2552213c995731"     
+meta-poky            = "zeus:cf92a2d567260b91a259652bad0ecd790750f710"
+```
 
 These commands will create a `sources/` folder and also a link to the top level folder
 that points to the build prepare script. Then you need to call this script by passing

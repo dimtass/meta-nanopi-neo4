@@ -5,12 +5,18 @@ COMPATIBLE_MACHINE = "(rk3399)"
 
 require linux-stable.inc
 
+DEPENDS += " \
+    util-linux-native \
+    util-linux \
+"
+
 LINUX_VERSION = "5.4"
 LINUX_VERSION_EXTENSION = "-nanopi-neo4"
 PREEMPT_RT_VERSION = "5.4.13-rt7"
 PV = "5.4.13"
 
 SRCREV = "ba19874032074ca5a3817ae82ebae27bd3343551"
+
 
 FILESEXTRAPATHS_prepend := "${THISDIR}/linux-stable_${LINUX_VERSION}:${THISDIR}/../../scripts:"
 

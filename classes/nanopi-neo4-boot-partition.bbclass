@@ -60,42 +60,36 @@ create_boot_part() {
 	# Create folder for overlays
 	mmd -i ${WORKDIR}/${RK_BOOT_IMAGE} ::/overlay
 	
+	# Get the dtbo overlays
+	overlays=$(find ${DEPLOY_DIR_IMAGE}/ | grep -F ".dtbo" )
+	# Add also the dtb with dtbo
+	dtbs="${KERNEL_DEVICETREE} \n${overlays}"
 	# Copy device tree file
-	if test -n "${KERNEL_DEVICETREE}"; then
-		for DTS_FILE in ${KERNEL_DEVICETREE}; do
-			DTS_BASE_NAME=`basename ${DTS_FILE} | awk -F "." '{print $1}'`
+	if test -n "${dtbs}"; then
+		for DTS_FILE in ${dtbs}; do
+			DTS_BASE_NAME=`basename ${DTS_FILE} | awk -F ".dtb" '{print $1}'`
 			DTS_DIR_NAME=`dirname ${DTS_FILE}`
 			# Copy all the dtbo files
 			if [ "${DTS_FILE##*.}" = "dtbo" ]; then
-				#bbwarn "copy ${KERNEL_IMAGETYPE}-${DTS_BASE_NAME}.dtbo to ${RK_BOOT_IMAGE}::/${DTS_FILE}"
-				mcopy -i ${WORKDIR}/${RK_BOOT_IMAGE} -s ${DEPLOY_DIR_IMAGE}/${KERNEL_IMAGETYPE}-${DTS_BASE_NAME}.dtbo ::/overlay/${DTS_BASE_NAME}.dtbo
+				mcopy -i ${WORKDIR}/${RK_BOOT_IMAGE} -s ${DEPLOY_DIR_IMAGE}/${DTS_BASE_NAME}.dtbo ::/overlay/${DTS_BASE_NAME}.dtbo
 			fi
-			if [ -e ${DEPLOY_DIR_IMAGE}/"${KERNEL_IMAGETYPE}-${DTS_BASE_NAME}.dtb" ]; then
-
+			if [ -e ${DEPLOY_DIR_IMAGE}/"${DTS_BASE_NAME}.dtb" ]; then
+				bbnote "DTS_BASE_NAME: ${DTS_BASE_NAME}"
+				bbnote "DTS_FILE: ${DTS_FILE}"
+				bbnote "DTS_DIR_NAME: ${DTS_DIR_NAME}"
 				if [ ${DTS_FILE} != ${DTS_BASE_NAME}.dtb ]; then
 					mmd -i ${WORKDIR}/${RK_BOOT_IMAGE} ::/${DTS_DIR_NAME}
 				fi
-
-				kernel_bin="`readlink ${DEPLOY_DIR_IMAGE}/${KERNEL_IMAGETYPE}-${MACHINE}.bin`"
-				kernel_bin_for_dtb="`readlink ${DEPLOY_DIR_IMAGE}/${KERNEL_IMAGETYPE}-${DTS_BASE_NAME}.dtb | sed "s,$DTS_BASE_NAME,${MACHINE},g;s,\.dtb$,.bin,g"`"
-				if [ $kernel_bin = $kernel_bin_for_dtb ]; then
-					mcopy -i ${WORKDIR}/${RK_BOOT_IMAGE} -s ${DEPLOY_DIR_IMAGE}/${KERNEL_IMAGETYPE}-${DTS_BASE_NAME}.dtb ::/${DTS_FILE}
-				fi
+				mcopy -i ${WORKDIR}/${RK_BOOT_IMAGE} -s ${DEPLOY_DIR_IMAGE}/${DTS_BASE_NAME}.dtb ::/${DTS_FILE}
 			fi
 		done
 	fi
 
-	if [ -e "${DEPLOY_DIR_IMAGE}/u-boot-${MACHINE}/fex.bin" ]; then
-		mcopy -i ${WORKDIR}/${RK_BOOT_IMAGE} -s ${DEPLOY_DIR_IMAGE}/u-boot-${MACHINE}/fex.bin ::script.bin
+	if [ -e "${DEPLOY_DIR_IMAGE}/boot.scr" ]; then
+		mcopy -i ${WORKDIR}/${RK_BOOT_IMAGE} -s ${DEPLOY_DIR_IMAGE}/boot.scr ::boot.scr
 	fi
-	if [ -e "${DEPLOY_DIR_IMAGE}/u-boot-${MACHINE}/boot.scr" ]; then
-		mcopy -i ${WORKDIR}/${RK_BOOT_IMAGE} -s ${DEPLOY_DIR_IMAGE}/u-boot-${MACHINE}/boot.scr ::boot.scr
-	fi
-	if [ -e "${DEPLOY_DIR_IMAGE}/u-boot-${MACHINE}/fixup.scr" ]; then
-		mcopy -i ${WORKDIR}/${RK_BOOT_IMAGE} -s ${DEPLOY_DIR_IMAGE}/u-boot-${MACHINE}/fixup.scr ::fixup.scr
-	fi
-	if [ -e "${DEPLOY_DIR_IMAGE}/u-boot-${MACHINE}/rkEnv.txt" ]; then
-		mcopy -i ${WORKDIR}/${RK_BOOT_IMAGE} -s ${DEPLOY_DIR_IMAGE}/u-boot-${MACHINE}/rkEnv.txt ::rkEnv.txt
+	if [ -e "${DEPLOY_DIR_IMAGE}/rkEnv.txt" ]; then
+		mcopy -i ${WORKDIR}/${RK_BOOT_IMAGE} -s ${DEPLOY_DIR_IMAGE}/rkEnv.txt ::rkEnv.txt
 	fi
 
 	# Add stamp file

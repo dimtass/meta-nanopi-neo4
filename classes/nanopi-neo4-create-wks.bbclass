@@ -30,7 +30,7 @@ RK_UBOOT_IMAGE ?= "${IMAGE_BASENAME}-${MACHINE}-uboot.img"
 RK_BOOT_IMAGE ?= "${IMAGE_BASENAME}-${MACHINE}-boot.img"
 
 # device will be used in u-boot and /etc/fstab
-RK_STORAGE_DEVICE ?= "mmcblk0"
+RK_STORAGE_DEVICE ?= "mmcblk1"
 
 # This is the extra space for the rootfs
 ROOT_EXTRA_SPACE ?= "4096"

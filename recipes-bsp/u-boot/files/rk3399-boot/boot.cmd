@@ -6,12 +6,11 @@
 setenv load_addr "0x39000000"
 setenv overlay_error "false"
 # default values
-setenv rootdev "/dev/mmcblk0p2"
+setenv rootdev "/dev/mmcblk1p2"
 setenv verbosity "1"
 setenv console "both"
 setenv rootfstype "ext4"
 setenv docker_optimizations "on"
-setenv fdtfile "rockchip/rk3399-nanopi-neo4.dtb"
 
 echo "Boot script loaded from ${devtype} ${devnum}"
 
