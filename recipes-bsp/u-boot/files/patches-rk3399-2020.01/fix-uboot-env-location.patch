@@ -1,0 +1,27 @@
+From fa4c255f4172f38aac8e20f1440ae4d903a73a26 Mon Sep 17 00:00:00 2001
+From: Mikhail Plotkin <mikhail.plotkin@gmail.com>
+Date: Wed, 18 Mar 2020 16:08:22 +0300
+Subject: [PATCH] Fix u-boot environment location for evb_rk3399
+
+---
+ include/configs/evb_rk3399.h | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/include/configs/evb_rk3399.h b/include/configs/evb_rk3399.h
+index b9c4d683f4..861be37911 100644
+--- a/include/configs/evb_rk3399.h
++++ b/include/configs/evb_rk3399.h
+@@ -8,7 +8,9 @@
+ 
+ #include <configs/rk3399_common.h>
+ 
+-#define CONFIG_SYS_MMC_ENV_DEV 0
++#define CONFIG_SYS_MMC_ENV_DEV 1
++#define CONFIG_ENV_OFFSET      0x3f8000
++#define CONFIG_ENV_SIZE        0x20000
+ 
+ #define SDRAM_BANK_SIZE			(2UL << 30)
+ 
+-- 
+2.17.1
+
