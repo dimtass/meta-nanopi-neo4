@@ -52,6 +52,10 @@ If you don't want to use swap the set this value to `0` like this:
 RK_SWAP_SIZE = "0"
 ```
 
+## Baudrate
+The default uart baudrate for this image is `1500000`, so don't get confused and try with `115200`.
+I'm using putty on Ubuntu.
+
 ## Default `local.conf` and `bblayers.conf`
 There's a script that prepares the build environment that uses a default `local.conf.sample`
 and `bblayers.conf.sample` file that are located in `meta-nanopi-neo4/conf/`.
@@ -73,7 +77,7 @@ git clone --depth 1 -j 8 git@bitbucket.org:dimtass/meta-nanopi-neo4.git
 git clone --depth 1 -j 8 -b zeus git@github.com:meta-qt5/meta-qt5.git
 git clone --depth 1 -j 8 -b zeus git@github.com:openembedded/meta-openembedded.git
 git clone --depth 1 -j 8 -b zeus git://git.yoctoproject.org/poky
-git clone --depth 1 -j 8 -b zeus git@github.com:rockchip-linux/meta-rockchip.git
+git clone --depth 1 -j 8 git@github.com:rockchip-linux/meta-rockchip.git
 rm -rf meta-rockchip/recipes-bsp/u-boot
 cd ..
 ln -s sources/meta-nanopi-neo4/scripts/setup-environment.sh
