@@ -19,7 +19,7 @@ The available supported distros are
 The images that are supported are:
 * `rk-image-base`: The base image with a few basic packages
 * `rk-image-multimedia`: Includes libdrm and gstreamer
-* `rk-image-qtwayland`: Supports Qt5 with qtwayland
+* `rk-image-qtwayland`: Supports Qt5 with qtwayland (currently doens't work)
 * `rk-image-testing`: A full blown image with a lot of debugging and test tools
 
 The testing image includes a lot of extra tools and includes them as `packagegroups`.
@@ -55,7 +55,7 @@ and `bblayers.conf.sample` file that are located in `meta-nanopi-neo4/conf/`.
 ## Versions
 Some useful component versions for this layer:
 * `u-boot`  : 2019.01
-* `Kernel`  : 4.4.175
+* `Kernel`  : 4.4.213
 * `libmali` : r14p0
 
 ## How to use this layer
@@ -65,18 +65,19 @@ folder run these commands:
 ```sh
 mkdir sources
 cd sources
-git clone --depth 1 -j 8 git@bitbucket.org:dimtass/meta-nanopi-neo4.git
-git clone --depth 1 -j 8 -b thud git@github.com:meta-qt5/meta-qt5.git
-git clone --depth 1 -j 8 -b sumo git@github.com:openembedded/meta-openembedded.git
-git clone --depth 1 -j 8 -b sumo git://git.yoctoproject.org/poky
-git clone --depth 1 -j 8 git@github.com:rockchip-linux/meta-rockchip.git
+git clone -j 8 git@bitbucket.org:dimtass/meta-nanopi-neo4.git
+git clone -j 8 -b thud git@github.com:meta-qt5/meta-qt5.git
+git clone -j 8 -b sumo git@github.com:openembedded/meta-openembedded.git
+git clone -j 8 -b sumo git://git.yoctoproject.org/poky
+git clone -j 8 git@github.com:rockchip-linux/meta-rockchip.git
 cd ..
-ln -s sources/meta-nanopi-neo4/setup-environment.sh
+ln -s sources/meta-nanopi-neo4/scripts/setup-environment.sh
+ln -s sources/meta-nanopi-neo4/scripts/flash-sd.sh
 ```
 
 The commit hashes I've succesfully tested are:
 * `meta-rockchip`: 226b2b3f4b584943cd1f0436cfae6285edbefe10
-* `poky`: b28f5672ab55ea303727e9f03bc594c7774d597e
+* `poky`: cbb677e9a09d5dad34404a851f7c23aeb5122465
 * `meta-openembedded`: 8760facba1bceb299b3613b8955621ddaa3d4c3f
 * `meta-qt5`: 360ca76d24453a57d4b7b50577771cc882d62be2
 
@@ -96,6 +97,14 @@ development tools, run this:
 ```sh
 bitbake rk-image-testing
 ```
+
+To flash the image:
+```sh
+sudo IMAGE=testing ./flash_sd.sh /dev/sdX
+```
+
+> Note: Currently the Qt image doesn't work because the example application is
+not available anymore. I'll fix this at a later point.
 
 ## Overclocking
 There's a variable that if it's set then the overclocking is enabled for all CPUs
@@ -123,8 +132,10 @@ to an off-screen surface like this:
 glmark2-es2-drm --off-screen
 ```
 
-If you want to use the `glmark2-es2-wayland` then you need first to export the
-`XDG_RUNTIME_DIR` and `WAYLAND_DISPLAY` and then run the benchmark, like this:
+If you want to use the `glmark2-es2-wayland` then you need to do this in the
+desktop environment. Therefore, you need to connect a keyboard and mouse to
+the SBC. Then you need to export the `XDG_RUNTIME_DIR` and `WAYLAND_DISPLAY`
+and then run the benchmark, like this:
 ```sh
 export XDG_RUNTIME_DIR=/run/user/1000
 export WAYLAND_DISPLAY=wayland-0
