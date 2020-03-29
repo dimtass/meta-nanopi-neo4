@@ -13,18 +13,15 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=d7810fab7487fb0aad327b76f1be7cd7"
 KERNEL_EXTRA_ARGS += "LOADADDR=${UBOOT_ENTRYPOINT}"
 
 LINUX_VERSION = "4.4"
-LINUX_VERSION_EXTENSION = "-nanopi-neo4"
 
 S = "${WORKDIR}/git"
 
-KERNEL_VERSION_SANITY_SKIP = "1"
-
-PV = "4.4.176"
-SRCREV = "decbad503ca983f939baca6c19a79117b11f5bd6"
+PV = "4.4.179"
+SRCREV = "31f28f9123ba30f4e794794fe915ced7e9e3bcec"
 
 # defconfig from armbian/build/config/kernel/linux-rk3399-default.config
 SRC_URI = " \
-        git://github.com/friendlyarm/kernel-rockchip.git;branch=nanopi4-linux-v4.4.y \
+        git://github.com/dimtass/kernel-rockchip.git;branch=nanopi4-linux-v4.4.y \
         file://do_patch.sh \
         file://rk3399-default \
         file://defconfig \

@@ -14,7 +14,7 @@ PREFERRED_VERSION_u-boot ?= "2019.01%"
 PREFERRED_PROVIDER_virtual/kernel ?= "friendlyarm-rockchip"
 PREFERRED_VERSION_linux-rockchip ?= "4.4"
 
-SERIAL_CONSOLES = "1500000;ttyS2"
+SERIAL_CONSOLES = "1500000;ttyFIQ0"
 KERNEL_IMAGETYPE = "Image"
 
 SPL_BINARY = "u-boot-dtb.bin"
