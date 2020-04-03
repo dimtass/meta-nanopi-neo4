@@ -1,0 +1,28 @@
+From 078360f01b82c88d81b2afbdad85282544bf3929 Mon Sep 17 00:00:00 2001
+From: Mikhail Plotkin <mikhail.plotkin@gmail.com>
+Date: Tue, 31 Mar 2020 22:06:03 +0300
+Subject: [PATCH] Fix u-boot environment location
+
+---
+ include/configs/rk3399_common.h | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/include/configs/rk3399_common.h b/include/configs/rk3399_common.h
+index eeda070752..17e4c28049 100644
+--- a/include/configs/rk3399_common.h
++++ b/include/configs/rk3399_common.h
+@@ -59,6 +59,11 @@
+ 
+ #endif
+ 
++#define CONFIG_SYS_MMC_ENV_DEV  0
++#define CONFIG_ENV_OFFSET       0x3f8000
++#define CONFIG_ENV_SIZE         0x20000
++
++
+ /* enable usb config for usb ether */
+ 
+ #endif
+-- 
+2.17.1
+
