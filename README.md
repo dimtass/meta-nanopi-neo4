@@ -72,7 +72,7 @@ git clone -j 8 -b sumo git://git.yoctoproject.org/poky
 git clone -j 8 git@github.com:rockchip-linux/meta-rockchip.git
 cd ..
 ln -s sources/meta-nanopi-neo4/scripts/setup-environment.sh
-ln -s sources/meta-nanopi-neo4/scripts/flash-sd.sh
+ln -s sources/meta-nanopi-neo4/scripts/flash_sd.sh
 ```
 
 The commit hashes I've succesfully tested are:
